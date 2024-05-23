@@ -1,30 +1,27 @@
 package de.telran.shop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "CartItems")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class CartItems {
     @Id
-    @Column(name = "CartItemID")
+    @Column(name = "CartItemId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cartItemId;
 
-    @Column(name = "CartID")
-    private long cartId;
+//    @Column(name = "CartId")
+//    private long cartId;
 
-    @Column(name = "ProductID")
+    @Column(name = "ProductId")
     private long  productId;
 
     @Column(name = "Quantity")
     private long quantity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="CartId", nullable=false)
+    private Cart cart;
 }

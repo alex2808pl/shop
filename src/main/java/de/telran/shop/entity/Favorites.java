@@ -1,27 +1,25 @@
 package de.telran.shop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "OrdersItems")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class Favorites {
     @Id
-    @Column(name = "FavoriteID")
+    @Column(name = "FavoriteId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long favoriteId;
 
-    @Column(name = "UserID")
-    private long userId;
+//    @Column(name = "UserId")
+//    private long userId;
 
-    @Column(name = "ProductID")
+    @Column(name = "ProductId")
     private long  productId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="UserId", nullable=false)
+    private Users users;
 
 }

@@ -1,29 +1,23 @@
 package de.telran.shop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "OrdersItems")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class OrderItems {
     @Id
-    @Column(name = "OrderItemID")
+    @Column(name = "OrderItemId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderItemId;
 
-    @Column(name = "OrderID")
-    private long orderId;
+//    @Column(name = "OrderId")
+//    private long orderId;
 
-    @Column(name = "ProductID")
+    @Column(name = "ProductId")
     private long  productId;
 
     @Column(name = "Quantity")
@@ -32,4 +26,7 @@ public class OrderItems {
     @Column(name = "PriceAtPurchase")
     private BigDecimal priceAtPurchase;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="orderId", nullable=false)
+    private Orders orders;
 }
