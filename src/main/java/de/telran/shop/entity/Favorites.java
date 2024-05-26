@@ -6,6 +6,8 @@ import lombok.*;
 @Entity
 @Table(name = "OrdersItems")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Favorites {
     @Id
     @Column(name = "FavoriteId")

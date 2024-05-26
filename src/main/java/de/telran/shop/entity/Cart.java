@@ -9,6 +9,8 @@ import java.util.Set;
 @Entity
 @Table(name = "Cart")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cart {
     @Id
     @Column(name = "CartId")
