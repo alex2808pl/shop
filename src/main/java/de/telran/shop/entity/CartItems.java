@@ -6,6 +6,8 @@ import lombok.*;
 @Entity
 @Table(name = "CartItems")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CartItems {
     @Id
     @Column(name = "CartItemId")
