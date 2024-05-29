@@ -8,7 +8,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Cart")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart {

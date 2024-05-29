@@ -9,9 +9,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Orders")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Orders {
     @Id
     @Column(name = "OrderId")
@@ -33,6 +35,7 @@ public class Orders {
     @Column(name = "DeliveryMethod")
     private String  deliveryMethod;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "Status")
     private Status status;
 
@@ -45,5 +48,6 @@ public class Orders {
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     private Set<OrderItems> orderItems = new HashSet<>();
+
 
 }

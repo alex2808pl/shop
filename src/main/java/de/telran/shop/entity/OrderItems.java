@@ -7,9 +7,11 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "OrderItems")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class OrderItems {
     @Id
     @Column(name = "OrderItemId")
@@ -31,4 +33,6 @@ public class OrderItems {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="orderId", nullable=false)
     private Orders orders;
+
+
 }

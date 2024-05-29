@@ -9,9 +9,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Users {
     @Id
     @Column(name = "UserId")
@@ -30,6 +32,7 @@ public class Users {
     @Column(name = "PasswordHash")
     private String passwordHash;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "Role")
     private Role role;
 
