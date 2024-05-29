@@ -42,14 +42,13 @@ class FavoritesRepositoryTest {
 //        Optional<Users> usersActualTest = usersRepositoryTest.findById(1L);
 //        Assertions.assertTrue(usersActualTest.isPresent());
 
-        // Заглушка для пользователдя
-        Users usersTest = new Users();
-        usersTest.setUserId(1);
-
         Favorites favoritesExpected = new Favorites();
         favoritesExpected.setProductId(1);
 
-        //favoritesExpected.setUsers(usersActualTest);
+        // Заглушка для пользователя
+        Users usersTest = new Users();
+        usersTest.setUserId(1);
+
         favoritesExpected.setUsers(usersTest);
 
         Favorites favoritesActual = favoritesRepositoryTest.save(favoritesExpected);
