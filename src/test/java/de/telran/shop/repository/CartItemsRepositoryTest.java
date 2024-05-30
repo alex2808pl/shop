@@ -29,7 +29,7 @@ class CartItemsRepositoryTest {
     Cart cart = new Cart();
     @BeforeEach
     void setUp() {
-        cartItemsTested.setCart(cartRepository.findById(CART_ID).orElse(null));//        cartItemsTested.setUser(null);
+        cartItemsTested.setCart(cartRepository.findById(CART_ID).orElse(null));
     }
 
     @AfterEach
