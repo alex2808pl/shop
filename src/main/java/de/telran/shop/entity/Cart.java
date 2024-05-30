@@ -25,6 +25,6 @@ public class Cart {
     private Set<CartItems> cartItems = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "UserId", referencedColumnName = "userId")
+    @JoinColumn(name = "UserId", referencedColumnName = "userId",  nullable=false)
     private Users user;
 }

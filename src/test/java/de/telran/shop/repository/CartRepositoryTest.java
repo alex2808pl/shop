@@ -29,7 +29,7 @@ class CartRepositoryTest {
     @BeforeEach
     void setUp() {
          cartTested.setCartItems(null);
-         cartTested.setUser(null);
+         cartTested.setUser(new Users());
     }
 
     @AfterEach
@@ -40,7 +40,6 @@ class CartRepositoryTest {
     @Test
     @Order(1)
     void testInsert() {
-
          cartRepository.save(cartTested);
          Cart cartExpected = cartRepository.findById(cartTested.getCartId()).orElse(null);
 
