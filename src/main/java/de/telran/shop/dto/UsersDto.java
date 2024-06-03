@@ -1,6 +1,5 @@
 package de.telran.shop.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import de.telran.shop.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,12 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UsersDto {
-    private Long userID;
+    private Long userId;
     private String name;
     private String email;
     private String phoneNumber;
     private String passwordHash;
     private Role role;
+
 
 //    @JsonProperty("cart")
 //    CartDto cartDto;

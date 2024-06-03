@@ -49,5 +49,4 @@ public class Orders {
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     private Set<OrderItems> orderItems = new HashSet<>();
 
-
 }

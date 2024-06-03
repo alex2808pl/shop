@@ -25,7 +25,7 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private Set<CartItems> cartItems = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "UserId", referencedColumnName = "userId",  nullable=false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserId", referencedColumnName = "userId")
     private Users user;
 }
