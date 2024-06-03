@@ -27,5 +27,5 @@ public class Cart {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserId", referencedColumnName = "userId")
-    private Users user;
+    private Users users;
 }

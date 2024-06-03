@@ -30,11 +30,11 @@ public class CartItemsService {
                         .cartItemId(f.getCartItemId())
                         .cart( new CartDto(f.getCart().getCartId(),
                                            new UsersDto(f.getCart().getCartId(),
-                                                        usersRepository.findById(f.getCart().getUser().getUserId()).orElse(null).getName(),
-                                                        usersRepository.findById(f.getCart().getUser().getUserId()).orElse(null).getEmail(),
-                                                        usersRepository.findById(f.getCart().getUser().getUserId()).orElse(null).getPhoneNumber(),
-                                                        usersRepository.findById(f.getCart().getUser().getUserId()).orElse(null).getPasswordHash(),
-                                                        usersRepository.findById(f.getCart().getUser().getUserId()).orElse(null).getRole())
+                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getName(),
+                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getEmail(),
+                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getPhoneNumber(),
+                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getPasswordHash(),
+                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getRole())
                         ))
                         .build())
                 .collect(Collectors.toList());
@@ -43,12 +43,12 @@ public class CartItemsService {
     public CartItemsDto getCartItemsById(Long id) {
          CartItems cartItems = cartItemsRepository.findById(id).orElse(null);
          if(cartItems != null) {
-                Users users = usersRepository.findById(cartRepository.findById(id).orElse(null).getUser().getUserId()).orElse(null);
+                Users users = usersRepository.findById(cartRepository.findById(id).orElse(null).getUsers().getUserId()).orElse(null);
                 return new CartItemsDto(id,
                                     cartItems.getProductId(),
                                     cartItems.getQuantity(),
                                     new CartDto(cartItems.getCartItemId(),
-                                                new UsersDto(cartRepository.findById(id).orElse(null).getUser().getUserId(),
+                                                new UsersDto(cartRepository.findById(id).orElse(null).getUsers().getUserId(),
                                                              users.getName(),
                                                              users.getEmail(),
                                                              users.getPhoneNumber(),
@@ -76,12 +76,12 @@ public class CartItemsService {
                                 cartItemsDto.getProductId(),
                                 cartItemsDto.getQuantity(),
                                 new CartDto(cartItems.getCart().getCartId(),
-                                            new UsersDto(cartItems.getCart().getUser().getUserId(),
-                                                        cartItems.getCart().getUser().getName(),
-                                                        cartItems.getCart().getUser().getEmail(),
-                                                        cartItems.getCart().getUser().getPhoneNumber(),
-                                                        cartItems.getCart().getUser().getPasswordHash(),
-                                                        cartItems.getCart().getUser().getRole())));
+                                            new UsersDto(cartItems.getCart().getUsers().getUserId(),
+                                                        cartItems.getCart().getUsers().getName(),
+                                                        cartItems.getCart().getUsers().getEmail(),
+                                                        cartItems.getCart().getUsers().getPhoneNumber(),
+                                                        cartItems.getCart().getUsers().getPasswordHash(),
+                                                        cartItems.getCart().getUsers().getRole())));
     }
         else {
             return null;}
@@ -99,12 +99,12 @@ public class CartItemsService {
                                         cartItemsDto.getProductId(),
                                         cartItemsDto.getQuantity(),
                                         new CartDto(cartItems.getCart().getCartId(),
-                                                    new UsersDto(cartItems.getCart().getUser().getUserId(),
-                                                    cartItems.getCart().getUser().getName(),
-                                                    cartItems.getCart().getUser().getEmail(),
-                                                    cartItems.getCart().getUser().getPhoneNumber(),
-                                                    cartItems.getCart().getUser().getPasswordHash(),
-                                                    cartItems.getCart().getUser().getRole())));
+                                                    new UsersDto(cartItems.getCart().getUsers().getUserId(),
+                                                    cartItems.getCart().getUsers().getName(),
+                                                    cartItems.getCart().getUsers().getEmail(),
+                                                    cartItems.getCart().getUsers().getPhoneNumber(),
+                                                    cartItems.getCart().getUsers().getPasswordHash(),
+                                                    cartItems.getCart().getUsers().getRole())));
             }
         }
         return null;
