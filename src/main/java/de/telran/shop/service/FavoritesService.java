@@ -4,11 +4,9 @@ import de.telran.shop.dto.FavoritesDto;
 import de.telran.shop.dto.UsersDto;
 import de.telran.shop.entity.Favorites;
 import de.telran.shop.entity.Users;
-import de.telran.shop.entity.enums.Role;
 import de.telran.shop.repository.FavoritesRepository;
 import de.telran.shop.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +28,6 @@ public class FavoritesService {
                         .map(f -> FavoritesDto.builder()
                                 .favoriteId(f.getFavoriteId())
                                 .productId(f.getProductId())
-                                .users(new UsersDto())
                                 .build())
                         .collect(Collectors.toList());
         return favoritesDtoList;
@@ -57,13 +54,12 @@ public class FavoritesService {
         // Получаю связанного Users
         UsersDto usersDto = favoritesDto.getUsers();
         Users users = null;
-        if(usersDto!=null && usersDto.getUserID()!=null) {
-            Optional<Users> usersOptional = usersRepository.findById(usersDto.getUserID());
+        if(usersDto!=null && usersDto.getUserId()!=null) {
+            Optional<Users> usersOptional = usersRepository.findById(usersDto.getUserId());
             if(usersOptional.isPresent()) {
                 users = usersOptional.get();
             }
          }
-
 
         // Преобразовую Dto в Entity
         Favorites favorites = new Favorites(0, favoritesDto.getProductId(), users);
@@ -94,8 +90,8 @@ public class FavoritesService {
         // Получаю связанного Users
         UsersDto usersDto = favoritesDto.getUsers();
         Users users = null;
-        if(usersDto!=null && usersDto.getUserID()!=null) {
-            Optional<Users> usersOptional = usersRepository.findById(usersDto.getUserID());
+        if(usersDto!=null && usersDto.getUserId()!=null) {
+            Optional<Users> usersOptional = usersRepository.findById(usersDto.getUserId());
             if(usersOptional.isPresent()) {
                 users = usersOptional.get();
             }
