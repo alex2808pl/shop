@@ -5,7 +5,7 @@ CREATE TABLE users (UserId INT AUTO_INCREMENT NOT NULL, Name VARCHAR(255) NULL, 
 
 -- changeset alex2808:create_table_cart
 CREATE TABLE cart (CartId INT AUTO_INCREMENT NOT NULL,
-UserId INT NULL, CONSTRAINT PK_CART PRIMARY KEY (CartId), UNIQUE (UserId));
+UserId INT NOT NULL, CONSTRAINT PK_CART PRIMARY KEY (CartId), UNIQUE (UserId));
 
 -- changeset alex2808:create_table_cartitems
 CREATE TABLE cartitems (CartItemId INT AUTO_INCREMENT NOT NULL, CartId INT NULL,
