@@ -12,15 +12,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UsersDto {
-    private Long userID;
+
+    private Long userId;
     private String name;
     private String email;
     private String phoneNumber;
     private String passwordHash;
     private Role role;
 
-//    @JsonProperty("cart")
+
+
+    //    @JsonProperty("cart")
 //    CartDto cartDto;
+
 
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -6,28 +6,27 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "OrderItems")
+//@Table(name = "OrderItems")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class OrderItems {
     @Id
-    @Column(name = "OrderItemId")
+//    @Column(name = "orderItemId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderItemId;
 
-//    @Column(name = "OrderId")
+//    @Column(name = "orderId")
 //    private long orderId;
 
-    @Column(name = "ProductId")
+//    @Column(name = "productId")
     private long  productId;
 
-    @Column(name = "Quantity")
+//    @Column(name = "quantity")
     private long quantity;
 
-    @Column(name = "PriceAtPurchase")
+//    @Column(name = "priceAtPurchase")
     private BigDecimal priceAtPurchase;
 
     @ManyToOne(fetch = FetchType.LAZY)

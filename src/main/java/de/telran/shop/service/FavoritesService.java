@@ -30,7 +30,12 @@ public class FavoritesService {
                         .map(f -> FavoritesDto.builder()
                                 .favoriteId(f.getFavoriteId())
                                 .productId(f.getProductId())
-                                .users(new UsersDto())
+                                .users(new UsersDto(f.getUsers().getUserId(),
+                                        f.getUsers().getName(),
+                                        f.getUsers().getEmail(),
+                                        f.getUsers().getPhoneNumber(),
+                                        f.getUsers().getPasswordHash(),
+                                        f.getUsers().getRole()))
                                 .build())
                         .collect(Collectors.toList());
         return favoritesDtoList;
@@ -38,10 +43,22 @@ public class FavoritesService {
 
     public FavoritesDto getFavoritesById(Long id) {
         Optional<Favorites> favorites = favoritesRepository.findById(id);
+
+        Users users = favorites.get().getUsers();
+        UsersDto usersDto = null;
+        if(users != null) {
+            usersDto = new UsersDto(users.getUserId(),
+                    users.getName(),
+                    users.getEmail(),
+                    users.getPhoneNumber(),
+                    users.getPasswordHash(),
+                    users.getRole());
+        }
+
         FavoritesDto favoritesDto = null;
         if(favorites.isPresent()) {
              favoritesDto = new FavoritesDto(favorites.get().getFavoriteId(),
-                    favorites.get().getProductId(), null);
+                    favorites.get().getProductId(), usersDto);
         }
         return favoritesDto;
     }
@@ -57,14 +74,12 @@ public class FavoritesService {
         // Получаю связанного Users
         UsersDto usersDto = favoritesDto.getUsers();
         Users users = null;
-        if(usersDto!=null && usersDto.getUserID()!=null) {
-            Optional<Users> usersOptional = usersRepository.findById(usersDto.getUserID());
+        if(usersDto!=null && usersDto.getUserId()!=null) {
+            Optional<Users> usersOptional = usersRepository.findById(usersDto.getUserId());
             if(usersOptional.isPresent()) {
                 users = usersOptional.get();
             }
          }
-
-
         // Преобразовую Dto в Entity
         Favorites favorites = new Favorites(0, favoritesDto.getProductId(), users);
 
@@ -72,8 +87,16 @@ public class FavoritesService {
         favorites = favoritesRepository.save(favorites);
 
         // трансформируем в Dto
+        usersDto = new UsersDto(users.getUserId(),
+                users.getName(),
+                users.getEmail(),
+                users.getPhoneNumber(),
+                users.getPasswordHash(),
+                users.getRole());
+
         FavoritesDto responseFavoritesDto = new FavoritesDto(favorites.getFavoriteId(),
-                favorites.getProductId(), null);
+                favorites.getProductId(),
+                usersDto);
 
         return responseFavoritesDto;
     }
@@ -91,26 +114,50 @@ public class FavoritesService {
             return null;
          }
 
-        // Получаю связанного Users
+        //Альтернативный вариант получения users (через favorites), хотелось бы услышать Ваше мнение
         UsersDto usersDto = favoritesDto.getUsers();
         Users users = null;
-        if(usersDto!=null && usersDto.getUserID()!=null) {
-            Optional<Users> usersOptional = usersRepository.findById(usersDto.getUserID());
-            if(usersOptional.isPresent()) {
-                users = usersOptional.get();
-            }
+        if(usersDto!=null && usersDto.getUserId()!=null){
+            users = favoritesOptional.get().getUsers();
+        }
+        if (usersDto.getUserId() != users.getUserId()) {//номер users, введенный пользователем не совпадает с тем, который прописан в базе данных
+            return null;
         }
 
         Favorites favorites  = favoritesOptional.get();
-        favorites.setProductId(favoritesDto.getProductId());
-        favorites.setUsers(users);
+        if (users != null && users.getUserId() != 0) {
+            favorites.setProductId(favoritesDto.getProductId());
+            favorites.setUsers(users);
+        }
+
+//        // Получаю связанного Users
+//        UsersDto usersDto = favoritesDto.getUsers();
+//        Users users = null;
+//        if(usersDto!=null && usersDto.getUserId()!=null) {
+//            Optional<Users> usersOptional = usersRepository.findById(favoritesOptional.get().getUsers().getUserId());
+//            if(usersOptional.isPresent()) {
+//                users = usersOptional.get();
+//            }
+//        }
+//        Favorites favorites  = favoritesOptional.get();
+//        favorites.setProductId(favoritesDto.getProductId());
+//        favorites.setUsers(users);
+
 
         //Сохраняю в БД
         favorites = favoritesRepository.save(favorites);
 
         // трансформируем в Dto
+        usersDto = new UsersDto(users.getUserId(),
+                users.getName(),
+                users.getEmail(),
+                users.getPhoneNumber(),
+                users.getPasswordHash(),
+                users.getRole());
+
         FavoritesDto responseFavoritesDto = new FavoritesDto(favorites.getFavoriteId(),
-                favorites.getProductId(), null);
+                favorites.getProductId(),
+                usersDto);
 
         return responseFavoritesDto;
     }

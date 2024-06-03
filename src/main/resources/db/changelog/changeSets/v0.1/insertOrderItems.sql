@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- changeset yulia:insert_orderitems
-insert into OrderItems (OrderId, ProductId, Quantity, PriceAtPurchase)
+insert into OrderItems (orderId, productId, quantity, priceAtPurchase)
 values
     (1, 1, 400, 200.00),
     (2, 2, 800, 400.00),

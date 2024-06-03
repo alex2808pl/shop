@@ -8,35 +8,34 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+//@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Users {
     @Id
-    @Column(name = "UserId")
+//    @Column(name = "userId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @Column(name = "Name")
+//    @Column(name = "name")
     private String name;
 
-    @Column(name = "Email")
+//    @Column(name = "email")
     private String email;
 
-    @Column(name = "PhoneNumber")
+//    @Column(name = "phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "PasswordHash")
+//    @Column(name = "passwordHash")
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Role")
+//    @Column(name = "role")
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
     private Cart cart;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
@@ -44,4 +43,5 @@ public class Users {
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private Set<Orders> orders = new HashSet<>();
+
 }

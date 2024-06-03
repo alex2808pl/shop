@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- changeset alex2808:insert_cartitems
-insert into cartitems (CartId,Quantity,ProductId)
+insert into cartitems (cartId,quantity,productId)
 values
     (1,5,1),
     (2,8,2),

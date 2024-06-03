@@ -7,25 +7,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Cart")
+//@Table(name = "cart")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart {
     @Id
-    @Column(name = "CartId")
+//    @Column(name = "cartId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cartId;
 
 
-//    @Column(name = "UserId")
+//    @Column(name = "userId")
 //    private long userId;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private Set<CartItems> cartItems = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "UserId", referencedColumnName = "userId")
-    private Users user;
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
+    private Users users;
 }

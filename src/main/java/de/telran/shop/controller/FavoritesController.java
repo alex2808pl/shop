@@ -4,6 +4,7 @@ import de.telran.shop.dto.FavoritesDto;
 import de.telran.shop.service.FavoritesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/favorites")
 public class FavoritesController {
+
     private final FavoritesService favoritesService;
 
     @GetMapping
