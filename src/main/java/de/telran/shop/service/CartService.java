@@ -25,12 +25,12 @@ public class CartService {
         return cartList.stream()
                 .map(f -> CartDto.builder()
                         .cartId(f.getCartId())
-                        .user(new UsersDto(f.getUser().getUserId(),
-                                           usersRepository.findById(f.getUser().getUserId()).orElse(null).getName(),
-                                           usersRepository.findById(f.getUser().getUserId()).orElse(null).getEmail(),
-                                           usersRepository.findById(f.getUser().getUserId()).orElse(null).getPhoneNumber(),
-                                           usersRepository.findById(f.getUser().getUserId()).orElse(null).getPasswordHash(),
-                                           usersRepository.findById(f.getUser().getUserId()).orElse(null).getRole()))
+                        .user(new UsersDto(f.getUsers().getUserId(),
+                                           usersRepository.findById(f.getUsers().getUserId()).orElse(null).getName(),
+                                           usersRepository.findById(f.getUsers().getUserId()).orElse(null).getEmail(),
+                                           usersRepository.findById(f.getUsers().getUserId()).orElse(null).getPhoneNumber(),
+                                           usersRepository.findById(f.getUsers().getUserId()).orElse(null).getPasswordHash(),
+                                           usersRepository.findById(f.getUsers().getUserId()).orElse(null).getRole()))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -39,12 +39,12 @@ public class CartService {
         Cart cart = cartRepository.findById(id).orElse(null);
         if (cart != null) {
             return new CartDto(cart.getCartId(),
-                               new UsersDto(cart.getUser().getUserId(),
-                                            cart.getUser().getName(),
-                                            cart.getUser().getEmail(),
-                                            cart.getUser().getPhoneNumber(),
-                                            cart.getUser().getPasswordHash(),
-                                            cart.getUser().getRole()));
+                               new UsersDto(cart.getUsers().getUserId(),
+                                            cart.getUsers().getName(),
+                                            cart.getUsers().getEmail(),
+                                            cart.getUsers().getPhoneNumber(),
+                                            cart.getUsers().getPasswordHash(),
+                                            cart.getUsers().getRole()));
         }
         return null;
     }
@@ -78,7 +78,7 @@ public class CartService {
     public CartDto updateCart(CartDto cartDto) {
         if (cartDto.getCartId() > 0 && cartDto.getUser() != null) {
             Cart cart = cartRepository.findById(cartDto.getCartId()).orElse(null);
-            if (cart != null && cart.getUser() != null) {
+            if (cart != null && cart.getUsers() != null) {
                 cart = cartRepository.save(new Cart(cartDto.getCartId(),
                                                     cartItemsRepository.findAll()
                                                                   .stream()
