@@ -1,6 +1,5 @@
 package de.telran.shop.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import de.telran.shop.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,8 +20,7 @@ public class UsersDto {
     private Role role;
 
 
-
-    //    @JsonProperty("cart")
+//    @JsonProperty("cart")
 //    CartDto cartDto;
 
 

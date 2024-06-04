@@ -4,11 +4,9 @@ import de.telran.shop.dto.FavoritesDto;
 import de.telran.shop.dto.UsersDto;
 import de.telran.shop.entity.Favorites;
 import de.telran.shop.entity.Users;
-import de.telran.shop.entity.enums.Role;
 import de.telran.shop.repository.FavoritesRepository;
 import de.telran.shop.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +28,7 @@ public class FavoritesService {
                         .map(f -> FavoritesDto.builder()
                                 .favoriteId(f.getFavoriteId())
                                 .productId(f.getProductId())
+
                                 .users(new UsersDto(f.getUsers().getUserId(),
                                         f.getUsers().getName(),
                                         f.getUsers().getEmail(),
@@ -117,9 +116,11 @@ public class FavoritesService {
         //Альтернативный вариант получения users (через favorites), хотелось бы услышать Ваше мнение
         UsersDto usersDto = favoritesDto.getUsers();
         Users users = null;
+
         if(usersDto!=null && usersDto.getUserId()!=null){
             users = favoritesOptional.get().getUsers();
         }
+      
         if (usersDto.getUserId() != users.getUserId()) {//номер users, введенный пользователем не совпадает с тем, который прописан в базе данных
             return null;
         }

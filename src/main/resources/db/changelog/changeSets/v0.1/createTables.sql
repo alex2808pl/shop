@@ -4,6 +4,7 @@
 CREATE TABLE users (userId INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NULL, email VARCHAR(255) NULL, phoneNumber VARCHAR(255) NULL, passwordHash VARCHAR(255) NULL, role ENUM('CLIENT', 'ADMINISTRATOR') NULL, CONSTRAINT PK_USERS PRIMARY KEY (userId));
 
 -- changeset alex2808:create_table_cart
+
 CREATE TABLE cart (cartId INT AUTO_INCREMENT NOT NULL,
 userId INT NULL, CONSTRAINT PK_CART PRIMARY KEY (cartId), UNIQUE (userId));
 
@@ -19,7 +20,6 @@ CREATE TABLE orders (orderId INT AUTO_INCREMENT NOT NULL, userId INT NULL, creat
 
 -- changeset yulia:create_table_orderitems
 CREATE TABLE orderitems (orderItemId INT AUTO_INCREMENT NOT NULL, orderId INT NULL, productId INT NULL, quantity INT NULL, priceAtPurchase DECIMAL NULL, CONSTRAINT PK_ORDERITEMS PRIMARY KEY (orderItemId));
-
 
 
 
