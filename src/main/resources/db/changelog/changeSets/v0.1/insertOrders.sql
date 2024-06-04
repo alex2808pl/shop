@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- changeset yulia:insert_orders
-insert into Orders (UserId, CreatedAt, DeliveryAddress, ContactPhone, DeliveryMethod, Status, UpdatedAt)
+insert into Orders (userId, createdAt, deliveryAddress, contactPhone, deliveryMethod, status, updatedAt)
 values
     (1, '2024-05-26', 'Cherrystr, 19','+4915245783','Standard','ORDERED','2024-05-26'),
     (2, '2024-05-26', 'Oakstr, 36','+4915634857','Standard','PAID','2024-05-26'),

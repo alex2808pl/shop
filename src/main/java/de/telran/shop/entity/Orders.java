@@ -8,38 +8,37 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Orders")
+//@Table(name = "orders")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Orders {
     @Id
-    @Column(name = "OrderId")
+//    @Column(name = "orderId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderId;
 
-//    @Column(name = "UserId")
+//    @Column(name = "userId")
 //    private String userId;
 
-    @Column(name = "CreatedAt")
+//    @Column(name = "createdAt")
     private Timestamp  createdAt;
 
-    @Column(name = "DeliveryAddress")
+//    @Column(name = "deliveryAddress")
     private String deliveryAddress;
 
-    @Column(name = "ContactPhone")
+//    @Column(name = "contactPhone")
     private String contactPhone;
 
-    @Column(name = "DeliveryMethod")
+//    @Column(name = "deliveryMethod")
     private String  deliveryMethod;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Status")
+//    @Column(name = "status")
     private Status status;
 
-    @Column(name = "UpdatedAt")
+//    @Column(name = "updatedAt")
     private Timestamp updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

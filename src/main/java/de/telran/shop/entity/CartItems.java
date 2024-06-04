@@ -4,27 +4,27 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "CartItems")
+//@Table(name = "cartItems")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItems {
     @Id
-    @Column(name = "CartItemId")
+//    @Column(name = "cartItemId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cartItemId;
 
-//    @Column(name = "CartId")
+//    @Column(name = "cartId")
 //    private long cartId;
 
-    @Column(name = "ProductId")
+//    @Column(name = "productId")
     private long  productId;
 
     @Column(name = "Quantity")
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="CartId", nullable=false)
+    @JoinColumn(name="cartId", nullable=false)
     private Cart cart;
 }
