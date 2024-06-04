@@ -17,6 +17,6 @@ public class CartDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("user")
-    private UsersDto user;
+    private UsersDto users;
 
 }

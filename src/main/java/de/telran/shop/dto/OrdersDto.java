@@ -29,11 +29,4 @@ public class OrdersDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("user")
     private UsersDto users;
-
-
-//    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
-//    private Set<OrderItems> orderItems = new HashSet<>();
-
-
-
 }
