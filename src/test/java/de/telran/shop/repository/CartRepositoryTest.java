@@ -29,7 +29,7 @@ class CartRepositoryTest {
     @BeforeEach
     void setUp() {
          cartTested.setCartItems(null);
-         cartTested.setUser(new Users());
+         cartTested.setUsers(new Users());
     }
 
     @AfterEach
@@ -45,7 +45,7 @@ class CartRepositoryTest {
 
          assertNotNull(cartExpected);
          assertEquals(cartTested.getCartId(), cartExpected.getCartId());
-         assertEquals(cartTested.getUser(), cartExpected.getUser());
+         assertEquals(cartTested.getUsers(), cartExpected.getUsers());
          assertTrue(cartExpected.getCartId()>0);
 
     }
@@ -62,14 +62,14 @@ class CartRepositoryTest {
     void testEdit(){
          cartRepository.save(cartTested);
          cartTested = cartRepository.findById(cartTested.getCartId()).orElse(null);
-         cartTested.setUser(usersRepository.findById(USER_ID).orElse(null));
+         cartTested.setUsers(usersRepository.findById(USER_ID).orElse(null));
          cartRepository.save(cartTested);
 
          Cart cartExpected = cartRepository.findById(cartTested.getCartId()).orElse(null);
 
          assertNotNull(cartExpected);
          assertEquals(cartExpected.getCartId(),cartTested.getCartId());
-         assertEquals(cartExpected.getUser(),usersRepository.findById(USER_ID).orElse(null));
+         assertEquals(cartExpected.getUsers(),usersRepository.findById(USER_ID).orElse(null));
          assertTrue(cartExpected.getCartId()>0);
     }
 

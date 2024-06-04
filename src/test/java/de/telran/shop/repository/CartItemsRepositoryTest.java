@@ -21,7 +21,7 @@ class CartItemsRepositoryTest {
     private final Long CARTITEMS_ID = 1L;
     private final long CART_ID = 2L;
     private final long PRODUCT_ID_NEW=1;
-    private final long QUANTITY_ID_NEW=1;
+    private final int QUANTITY_ID_NEW=1;
     CartItems cartItemsTested = new CartItems();
 
     @Autowired
