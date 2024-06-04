@@ -36,7 +36,7 @@ public class Users {
     @Column(name = "Role")
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
     private Cart cart;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
