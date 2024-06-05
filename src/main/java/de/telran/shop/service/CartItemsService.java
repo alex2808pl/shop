@@ -1,15 +1,18 @@
 package de.telran.shop.service;
 
+import de.telran.shop.config.MapperUtil;
 import de.telran.shop.dto.CartDto;
 import de.telran.shop.dto.CartItemsDto;
 import de.telran.shop.dto.UsersDto;
 import de.telran.shop.entity.Cart;
 import de.telran.shop.entity.CartItems;
 import de.telran.shop.entity.Users;
+import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.CartItemsRepository;
 import de.telran.shop.repository.CartRepository;
 import de.telran.shop.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,90 +25,35 @@ public class CartItemsService {
     private final CartRepository cartRepository;
     private final UsersRepository usersRepository;
     private final CartItemsRepository cartItemsRepository;
+    private final Mappers mappers;
+    private final ModelMapper modelMapper;
 
     public List<CartItemsDto> getCartItems() {
-        List<CartItems> cartItemsList = cartItemsRepository.findAll();
-        return cartItemsList.stream()
-                .map(f -> CartItemsDto.builder()
-                        .cartItemId(f.getCartItemId())
-                        .cart( new CartDto(f.getCart().getCartId(),
-                                           new UsersDto(f.getCart().getCartId(),
-                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getName(),
-                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getEmail(),
-                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getPhoneNumber(),
-                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getPasswordHash(),
-                                                        usersRepository.findById(f.getCart().getUsers().getUserId()).orElse(null).getRole())
-                        ))
-                        .build())
-                .collect(Collectors.toList());
+        return MapperUtil.convertList(cartItemsRepository.findAll(), mappers::convertToCartItemsDto);
     }
 
     public CartItemsDto getCartItemsById(Long id) {
-         CartItems cartItems = cartItemsRepository.findById(id).orElse(null);
-         if(cartItems != null) {
-                Users users = usersRepository.findById(cartRepository.findById(id).orElse(null).getUsers().getUserId()).orElse(null);
-                return new CartItemsDto(id,
-                                    cartItems.getProductId(),
-                                    cartItems.getQuantity(),
-                                    new CartDto(cartItems.getCartItemId(),
-                                                new UsersDto(cartRepository.findById(id).orElse(null).getUsers().getUserId(),
-                                                             users.getName(),
-                                                             users.getEmail(),
-                                                             users.getPhoneNumber(),
-                                                             users.getPasswordHash(),
-                                                             users.getRole())));
-         }
-         return null;
+        return mappers.convertToCartItemsDto(cartItemsRepository.findById(id).orElse(null));
     }
 
     public void deleteCartItemById(Long id) {
-        CartItems cartItems = cartItemsRepository.findById(id).orElse(null);
-        if(cartItems != null) {
-            cartItemsRepository.delete(cartItems);
-        }
+        cartItemsRepository.findById(id).ifPresent(cartItemsRepository::delete);
     }
 
     public CartItemsDto insertCartItems(CartItemsDto cartItemsDto) {
-        Cart cart = cartRepository.findById(cartItemsDto.getCart().getCartId()).orElse(null);
-        if(cartItemsDto.getCart() !=null && cart != null) {
-        CartItems cartItems = cartItemsRepository.save( new CartItems(0,
-                                            cartItemsDto.getProductId(),
-                                            cartItemsDto.getQuantity(),
-                                            cart));
-        return new CartItemsDto(cartItems.getCartItemId(),
-                                cartItemsDto.getProductId(),
-                                cartItemsDto.getQuantity(),
-                                new CartDto(cartItems.getCart().getCartId(),
-                                            new UsersDto(cartItems.getCart().getUsers().getUserId(),
-                                                        cartItems.getCart().getUsers().getName(),
-                                                        cartItems.getCart().getUsers().getEmail(),
-                                                        cartItems.getCart().getUsers().getPhoneNumber(),
-                                                        cartItems.getCart().getUsers().getPasswordHash(),
-                                                        cartItems.getCart().getUsers().getRole())));
+        if (cartItemsDto.getCart() !=null
+                && cartRepository.findById(cartItemsDto.getCart().getCartId()).orElse(null) != null ) {
+                        return mappers.convertToCartItemsDto(cartItemsRepository.save(mappers.convertToCartItems(cartItemsDto)));
     }
         else {
             return null;}
     }
 
     public CartItemsDto updateCartItems(CartItemsDto cartItemsDto) {
-        if (cartItemsDto.getCartItemId() > 0) {
-            CartItems cartItems = cartItemsRepository.findById(cartItemsDto.getCartItemId()).orElse(null);
-            if (cartItems != null) {
-                cartItems = cartItemsRepository.save(new CartItems(cartItemsDto.getCartItemId(),
-                                                                   cartItemsDto.getProductId(),
-                                                                   cartItemsDto.getQuantity(),
-                                                                   cartRepository.findById(cartItemsDto.getCart().getCartId()).orElse(null)));
-                return new CartItemsDto(cartItems.getCartItemId(),
-                                        cartItemsDto.getProductId(),
-                                        cartItemsDto.getQuantity(),
-                                        new CartDto(cartItems.getCart().getCartId(),
-                                                    new UsersDto(cartItems.getCart().getUsers().getUserId(),
-                                                    cartItems.getCart().getUsers().getName(),
-                                                    cartItems.getCart().getUsers().getEmail(),
-                                                    cartItems.getCart().getUsers().getPhoneNumber(),
-                                                    cartItems.getCart().getUsers().getPasswordHash(),
-                                                    cartItems.getCart().getUsers().getRole())));
-            }
+        if (cartItemsDto.getCartItemId() > 0
+                && cartItemsRepository.findById(cartItemsDto.getCartItemId()).orElse(null) != null
+                && cartRepository.findById(cartItemsDto.getCart().getCartId()).orElse(null) != null) {
+                        return mappers.convertToCartItemsDto(cartItemsRepository.save(mappers.convertToCartItems(cartItemsDto)));
         }
         return null;
     }
