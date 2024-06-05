@@ -1,11 +1,14 @@
 package de.telran.shop.service;
 
+import de.telran.shop.config.MapperUtil;
+import de.telran.shop.dto.CartDto;
 import de.telran.shop.dto.OrderItemsDto;
 import de.telran.shop.dto.OrdersDto;
 import de.telran.shop.dto.UsersDto;
 import de.telran.shop.entity.OrderItems;
 import de.telran.shop.entity.Orders;
 import de.telran.shop.entity.Users;
+import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.OrderItemsRepository;
 import de.telran.shop.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,31 +23,12 @@ public class OrderItemsService {
 
     private final OrdersRepository ordersRepository;
     private final OrderItemsRepository orderItemsRepository;
+    private final Mappers mappers;
 
     public List<OrderItemsDto> getOrderItems() {
         List<OrderItems> orderItemsList = orderItemsRepository.findAll();
-        List<OrderItemsDto> orderItemsDtoList =
-                orderItemsList.stream()
-                        .map(item -> OrderItemsDto.builder()
-                                .orderItemId(item.getOrderItemId())
-                                .productId(item.getProductId())
-                                .quantity(item.getQuantity())
-                                .priceAtPurchase(item.getPriceAtPurchase())
-                                .orders(new OrdersDto(item.getOrders().getOrderId(),
-                                        item.getOrders().getCreatedAt(),
-                                        item.getOrders().getDeliveryAddress(),
-                                        item.getOrders().getContactPhone(),
-                                        item.getOrders().getDeliveryMethod(),
-                                        item.getOrders().getStatus(),
-                                        item.getOrders().getUpdatedAt(),
-                                        (new UsersDto(item.getOrders().getUsers().getUserId(),
-                                                item.getOrders().getUsers().getName(),
-                                                item.getOrders().getUsers().getEmail(),
-                                                item.getOrders().getUsers().getPhoneNumber(),
-                                                item.getOrders().getUsers().getPasswordHash(),
-                                                item.getOrders().getUsers().getRole()))))
-                                .build())
-                        .collect(Collectors.toList());
+        List<OrderItemsDto> orderItemsDtoList = MapperUtil.convertList(orderItemsList, mappers::convertToOrderItemsDto);
+
         return orderItemsDtoList;
     }
 
@@ -55,36 +39,12 @@ public class OrderItemsService {
         Orders orders = orderItems.getOrders();
         Users users = orders.getUsers();
 
-        UsersDto usersDto = null;
-        if (users != null) {
-            usersDto = new UsersDto(users.getUserId(),
-                    users.getName(),
-                    users.getEmail(),
-                    users.getPhoneNumber(),
-                    users.getPasswordHash(),
-                    users.getRole());
-        }
-
-        OrdersDto ordersDto = null;
-        if (orders != null) {
-            ordersDto = new OrdersDto(orders.getOrderId(),
-                    orders.getCreatedAt(),
-                    orders.getDeliveryAddress(),
-                    orders.getContactPhone(),
-                    orders.getDeliveryMethod(),
-                    orders.getStatus(),
-                    orders.getUpdatedAt(),
-                    usersDto);
-        }
-
         OrderItemsDto orderItemsDto = null;
-        if (orderItems != null) {
-            orderItemsDto = new OrderItemsDto(orderItems.getOrderItemId(),
-                    orderItems.getProductId(),
-                    orderItems.getQuantity(),
-                    orderItems.getPriceAtPurchase(),
-                    ordersDto);
+
+        if (orderItems != null && orders != null && users != null) {
+            orderItemsDto = mappers.convertToOrderItemsDto(orderItems);
         }
+
         return orderItemsDto;
     }
 
@@ -96,49 +56,20 @@ public class OrderItemsService {
     }
 
     public OrderItemsDto insertOrderItems(OrderItemsDto orderItemsDto) {
-        OrdersDto ordersDto = orderItemsDto.getOrders();
-        Orders orders = null;
-        Users users = null;
 
-        if (ordersDto != null && ordersDto.getOrderId() != null) {
-            orders = ordersRepository.findById(ordersDto.getOrderId()).orElse(null);
-            users = orders.getUsers();
+        if (orderItemsDto.getOrders() == null && orderItemsDto.getOrders().getOrderId() == null) {
+            return null;
         }
+        OrderItems orderItems = mappers.convertToOrderItems(orderItemsDto);
+        orderItems.setOrderItemId(0);
 
-        OrderItems orderItems = null;
-        if (orders != null) {
-            orderItems = new OrderItems(0,
-                    orderItemsDto.getProductId(),
-                    orderItemsDto.getQuantity(),
-                    orderItemsDto.getPriceAtPurchase(),
-                    orders);
-        }
-        orderItems = orderItemsRepository.save(orderItems);
+        Orders orders = ordersRepository.findById(orderItemsDto.getOrders().getOrderId()).orElse(null);
+        orderItems.setOrders(orders);
+        OrderItems savedOrderItems = orderItemsRepository.save(orderItems);
 
-        UsersDto responceUsersDto = new UsersDto(users.getUserId(),
-                users.getName(),
-                users.getEmail(),
-                users.getPhoneNumber(),
-                users.getPasswordHash(),
-                users.getRole());
-
-        OrdersDto responseOrdersDto = new OrdersDto(orders.getOrderId(),
-                orders.getCreatedAt(),
-                orders.getDeliveryAddress(),
-                orders.getContactPhone(),
-                orders.getDeliveryMethod(),
-                orders.getStatus(),
-                orders.getUpdatedAt(),
-                responceUsersDto);
-
-        OrderItemsDto responceOrderItemsDto = new OrderItemsDto(orderItems.getOrderItemId(),
-                orderItems.getProductId(),
-                orderItems.getQuantity(),
-                orderItems.getPriceAtPurchase(),
-                responseOrdersDto);
-
-        return responceOrderItemsDto;
+        return mappers.convertToOrderItemsDto(savedOrderItems);
     }
+
 
     public OrderItemsDto updateOrderItems(OrderItemsDto orderItemsDto) {
         if (orderItemsDto.getOrderItemId() <= 0) { // При редактировании такого быть не должно, нужно вывести пользователю ошибку
@@ -146,54 +77,18 @@ public class OrderItemsService {
         }
 
         OrderItems orderItems = orderItemsRepository.findById(orderItemsDto.getOrderItemId()).orElse(null);
-        if (orderItems == null) {// Объект в БД не найден с таким orderId, нужно вывести пользователю ошибку
+        Orders orders = orderItems.getOrders();
+        if (orderItems == null || orders == null) {// Объект в БД не найден с таким orderId, нужно вывести пользователю ошибку
+            return null;
+        }
+        if (orderItemsDto.getOrderItemId() != orderItems.getOrderItemId()) {//номер orderItems, введенный пользователем не совпадает с тем, который прописан в базе данных
             return null;
         }
 
-        OrdersDto ordersDto = orderItemsDto.getOrders();
-        Orders orders = null;
-        if(ordersDto != null && ordersDto.getOrderId() != 0){
-            orders = orderItems.getOrders();
-        }
-        if (ordersDto.getOrderId() != orders.getOrderId()) {//номер заказа, введенный пользователем не совпадает с тем, который прописан в базе данных
-            return null;
-        }
+        orderItems = mappers.convertToOrderItems(orderItemsDto);
+        OrderItems updatedOrderItems = orderItemsRepository.save(orderItems);
+        OrderItemsDto responseOrderItemsDto = mappers.convertToOrderItemsDto(updatedOrderItems);
 
-        Users users = null;
-        if (orders != null && orders.getOrderId() != 0) {
-            users = orders.getUsers();
-        }
-
-        if (users != null) {
-            orderItems.setProductId(orderItemsDto.getProductId());
-            orderItems.setQuantity(orderItemsDto.getQuantity());
-            orderItems.setPriceAtPurchase(orderItemsDto.getPriceAtPurchase());
-            orderItems.setOrders(orders);
-        }
-        orderItems = orderItemsRepository.save(orderItems);
-
-        UsersDto responceUsersDto = new UsersDto(users.getUserId(),
-                users.getName(),
-                users.getEmail(),
-                users.getPhoneNumber(),
-                users.getPasswordHash(),
-                users.getRole());
-
-        OrdersDto responseOrdersDto = new OrdersDto(orders.getOrderId(),
-                orders.getCreatedAt(),
-                orders.getDeliveryAddress(),
-                orders.getContactPhone(),
-                orders.getDeliveryMethod(),
-                orders.getStatus(),
-                orders.getUpdatedAt(),
-                responceUsersDto);
-
-        OrderItemsDto responceOrderItemsDto = new OrderItemsDto(orderItems.getOrderItemId(),
-                orderItems.getProductId(),
-                orderItems.getQuantity(),
-                orderItems.getPriceAtPurchase(),
-                responseOrdersDto);
-
-        return responceOrderItemsDto;
+        return responseOrderItemsDto;
     }
 }

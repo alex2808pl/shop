@@ -56,7 +56,7 @@ public class FavoritesService {
 
         FavoritesDto favoritesDto = null;
         if(favorites.isPresent()) {
-             favoritesDto = new FavoritesDto(favorites.get().getFavoriteId(),
+            favoritesDto = new FavoritesDto(favorites.get().getFavoriteId(),
                     favorites.get().getProductId(), usersDto);
         }
         return favoritesDto;
@@ -78,7 +78,7 @@ public class FavoritesService {
             if(usersOptional.isPresent()) {
                 users = usersOptional.get();
             }
-         }
+        }
         // Преобразовую Dto в Entity
         Favorites favorites = new Favorites(0, favoritesDto.getProductId(), users);
 
@@ -111,7 +111,7 @@ public class FavoritesService {
         if(!favoritesOptional.isPresent()) {
             // Объект в БД не найден с таким favoriteId, нужно вывести пользователю ошибку
             return null;
-         }
+        }
 
         //Альтернативный вариант получения users (через favorites), хотелось бы услышать Ваше мнение
         UsersDto usersDto = favoritesDto.getUsers();
@@ -120,7 +120,7 @@ public class FavoritesService {
         if(usersDto!=null && usersDto.getUserId()!=null){
             users = favoritesOptional.get().getUsers();
         }
-      
+
         if (usersDto.getUserId() != users.getUserId()) {//номер users, введенный пользователем не совпадает с тем, который прописан в базе данных
             return null;
         }

@@ -21,5 +21,5 @@ public class UsersDto {
     private Role role;
 
 //    @JsonProperty("cart")
-//    CartDto cartDto;
+//    private CartDto cartDto;
 }
