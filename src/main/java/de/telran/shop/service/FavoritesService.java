@@ -40,7 +40,7 @@ public class FavoritesService {
                 &&  usersRepository.findById(favoritesDto.getUsers().getUserId()).orElse(null) != null) {
             return mappers.convertToFavoritesDto(favoritesRepository.save(mappers.convertToFavorites(favoritesDto)));
         }
-        else {
+      else {
         return null;
         }
     }

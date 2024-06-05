@@ -1,7 +1,7 @@
 package de.telran.shop.controller;
 
 import de.telran.shop.dto.OrdersDto;
-import de.telran.shop.service.OrderService;
+import de.telran.shop.service.OrdersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping(value = "/orders")
 public class OrdersController {
 
-    private final OrderService orderService;
+    private final OrdersService orderService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
