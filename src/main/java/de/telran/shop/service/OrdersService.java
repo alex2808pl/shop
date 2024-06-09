@@ -2,7 +2,6 @@ package de.telran.shop.service;
 
 import de.telran.shop.config.MapperUtil;
 import de.telran.shop.dto.OrdersDto;
-import de.telran.shop.dto.UsersDto;
 import de.telran.shop.entity.Orders;
 import de.telran.shop.entity.Users;
 import de.telran.shop.mapper.Mappers;
@@ -54,11 +53,12 @@ public class OrdersService {
             return null;
         }
         Orders orders = mappers.convertToOrders(ordersDto);
+
         orders.setOrderId(0);
         orders.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-
         Users users = usersRepository.findById(ordersDto.getUsers().getUserId()).orElse(null);
         orders.setUsers(users);
+
         Orders savedOrders = ordersRepository.save(orders);
 
         return mappers.convertToOrdersDto(savedOrders);

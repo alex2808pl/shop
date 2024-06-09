@@ -13,35 +13,35 @@ import java.util.List;
 @RequestMapping(value = "/orders")
 public class OrdersController {
 
-    private final OrdersService orderService;
+    private final OrdersService ordersService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<OrdersDto> getOrders() {
-        return orderService.getOrders();
+        return ordersService.getOrders();
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrdersDto getOrdersById(@PathVariable Long id) {
-        return orderService.getOrdersById(id);
+        return ordersService.getOrdersById(id);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrdersById(@PathVariable Long id) {
-        orderService.deleteOrdersById(id);
+        ordersService.deleteOrdersById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrdersDto insertOrders(@RequestBody OrdersDto ordersDto) {
-        return orderService.insertOrders(ordersDto);
+        return ordersService.insertOrders(ordersDto);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public OrdersDto updateOrders(@RequestBody OrdersDto ordersDto) {
-        return orderService.updateOrders(ordersDto);
+        return ordersService.updateOrders(ordersDto);
     }
 }
