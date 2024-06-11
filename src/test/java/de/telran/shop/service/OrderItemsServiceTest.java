@@ -242,6 +242,7 @@ class OrderItemsServiceTest {
                 new BigDecimal("200.00"),
                 orders1);
 
+        when(ordersRepositoryMock.findById(orderItemsDto3.getOrders().getOrderId())).thenReturn(Optional.of(orders3));
         when(mappersMock.convertToOrderItems(orderItemsDto3)).thenReturn(orderItems3);
         when(orderItemsRepositoryMock.save(any(OrderItems.class))).thenReturn(orderItems1);
         when(mappersMock.convertToOrderItemsDto(orderItems1)).thenReturn(orderItemsDto1);

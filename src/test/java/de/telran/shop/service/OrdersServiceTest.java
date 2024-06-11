@@ -209,6 +209,7 @@ class OrdersServiceTest {
                 users3,
                 new HashSet<OrderItems>());
 
+        when(usersRepositoryMock.findById(ordersDto3.getUsers().getUserId())).thenReturn(Optional.of(users3));
         when(mappersMock.convertToOrders(ordersDto3)).thenReturn(orders3);
         when(ordersRepositoryMock.save(any(Orders.class))).thenReturn(orders1);
         when(mappersMock.convertToOrdersDto(orders1)).thenReturn(ordersDto1);

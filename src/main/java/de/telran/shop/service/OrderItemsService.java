@@ -60,6 +60,11 @@ public class OrderItemsService {
         if (orderItemsDto.getOrders() == null && orderItemsDto.getOrders().getOrderId() == null) {
             return null;
         }
+
+        if (ordersRepository.findById(orderItemsDto.getOrders().getOrderId()).orElse(null) == null) {
+            return null;
+        }
+
         OrderItems orderItems = mappers.convertToOrderItems(orderItemsDto);
         orderItems.setOrderItemId(0);
 
