@@ -1,9 +1,7 @@
 package de.telran.shop.service;
 
 import de.telran.shop.config.MapperUtil;
-import de.telran.shop.dto.CartDto;
 import de.telran.shop.dto.UsersDto;
-import de.telran.shop.entity.Cart;
 import de.telran.shop.entity.Users;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.CartRepository;
@@ -12,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +19,14 @@ public class UsersService {
     private final CartRepository cartRepository;
     private final Mappers mappers;
 
-    public List<UsersDto> getAllUsers() {
+    public List<UsersDto> getUsers() {
         List<Users> usersList = usersRepository.findAll();
         List<UsersDto> usersDtoList = MapperUtil.convertList(usersList, mappers::convertToUsersDto);
 
         return usersDtoList;
     }
 
-    public UsersDto getUserById(Long id) {
+    public UsersDto getUsersById(Long id) {
         Users users = usersRepository.findById(id).orElse(null);
         UsersDto usersDto = null;
         if (users != null) {
@@ -39,7 +36,7 @@ public class UsersService {
     }
 
 
-    public void deleteUserById(Long id) {
+    public void deleteUsersById(Long id) {
         Users users = usersRepository.findById(id).orElse(null);
         if (users != null) {
             usersRepository.delete(users);
@@ -47,8 +44,9 @@ public class UsersService {
     }
 
 
-    public UsersDto insertUser(UsersDto usersDto) {
+    public UsersDto insertUsers(UsersDto usersDto) {
         Users users = mappers.convertToUsers(usersDto);
+
         users.setUserId(0);
         Users savedUsers = usersRepository.save(users);
 

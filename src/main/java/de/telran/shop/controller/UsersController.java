@@ -17,26 +17,26 @@ public class UsersController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UsersDto> getFavorites() {
-        return usersService.getAllUsers();
+    public List<UsersDto> getUsers() {
+        return usersService.getUsers();
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UsersDto getUserById(@PathVariable Long id) {
-        return usersService.getUserById(id);
+    public UsersDto getUsersById(@PathVariable Long id) {
+        return usersService.getUsersById(id);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable Long id) {
-        usersService.deleteUserById(id);
+    public void deleteUsersById(@PathVariable Long id) {
+        usersService.deleteUsersById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsersDto insertUser(@RequestBody UsersDto usersDto) {
-        return usersService.insertUser(usersDto);
+    public UsersDto insertUsers(@RequestBody UsersDto usersDto) {
+        return usersService.insertUsers(usersDto);
     }
 
     @PutMapping

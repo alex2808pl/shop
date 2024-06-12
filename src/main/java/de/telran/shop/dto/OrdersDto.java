@@ -22,7 +22,7 @@ public class OrdersDto {
     private Timestamp createdAt;
     private String deliveryAddress;
     private String contactPhone;
-    private String  deliveryMethod;
+    private String deliveryMethod;
     private Status status;
     private Timestamp updatedAt;
 
