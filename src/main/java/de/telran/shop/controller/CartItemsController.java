@@ -2,9 +2,13 @@ package de.telran.shop.controller;
 
 
 import de.telran.shop.dto.CartItemsDto;
+import de.telran.shop.exceptions.CartItemNotFoundException;
+import de.telran.shop.exceptions.CartItemWrongValueException;
 import de.telran.shop.service.CartItemsService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.spi.ErrorMessage;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,5 +49,15 @@ public class CartItemsController {
         return cartItemsService.updateCartItems(cartItemsDto);
     }
 
+    @ExceptionHandler(CartItemNotFoundException.class)
+    public ResponseEntity<ErrorMessage> errorMessage(CartItemNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorMessage(exception.getMessage()));
+    }
+    @ExceptionHandler(CartItemWrongValueException.class)
+    public ResponseEntity<ErrorMessage> errorMessage(CartItemWrongValueException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorMessage(exception.getMessage()));
+    }
 }
 
