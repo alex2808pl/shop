@@ -117,7 +117,7 @@ class CartItemsServiceTest {
         Assertions.assertEquals(cartItemsDto1.getCartItemId(),cartItemsById.getCartItemId());
         Assertions.assertEquals(cartItem1.getCart().getCartId(),cartItemsById.getCart().getCartId());
 
-        verify(cartItemsRepositoryMock,Mockito.times(1)).findById(id);
+        verify(cartItemsRepositoryMock,Mockito.times(2)).findById(id);
         verify(mappers,Mockito.times(1)).convertToCartItemsDto(any(CartItems.class));
     }
 
@@ -185,6 +185,7 @@ class CartItemsServiceTest {
         when(cartRepositoryMock.findById(id)).thenReturn(Optional.of(cart2));
         when(cartItemsRepositoryMock.save(any(CartItems.class))).thenReturn(cartItem3);
         when(mappers.convertToCartItemsDto(any(CartItems.class))).thenReturn(cartItemsDto3);
+        when(mappers.convertToCartItems(any(CartItemsDto.class))).thenReturn(cartItem3);
 
         CartItemsDto cartItemsDto = cartItemsServiceMock.updateCartItems(cartItemsDto3);
 
@@ -194,7 +195,7 @@ class CartItemsServiceTest {
         verify(mappers,Mockito.times(1)).convertToCartItemsDto(any(CartItems.class));
         verify(cartRepositoryMock,Mockito.times(1)).findById(id);
         verify(cartItemsRepositoryMock,Mockito.times(1)).save(any(CartItems.class));
-        verify(cartItemsRepositoryMock,Mockito.times(2)).findById(cartItem3.getCartItemId());
+        verify(cartItemsRepositoryMock,Mockito.times(1)).findById(cartItem3.getCartItemId());
 
     }
 }

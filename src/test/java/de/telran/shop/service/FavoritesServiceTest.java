@@ -121,7 +121,7 @@ import static org.mockito.Mockito.when;
     FavoritesDto favoritesById = favoritesServiceMock.getFavoritesById(id);
     Assertions.assertNotNull(favoritesById);
 
-    verify(favoritesRepositoryMock,Mockito.times(1)).findById(id);
+    verify(favoritesRepositoryMock,Mockito.times(2)).findById(id);
     verify(mappersMock,Mockito.times(1)).convertToFavoritesDto(any(Favorites.class));
     Assertions.assertEquals(favoritesDto1.getFavoriteId(),favoritesById.getFavoriteId());
     Assertions.assertEquals(favorites1.getUsers().getUserId(),favoritesById.getUsers().getUserId());

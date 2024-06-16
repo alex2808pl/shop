@@ -4,15 +4,18 @@ import de.telran.shop.dto.CartDto;
 import de.telran.shop.dto.CartItemsDto;
 import de.telran.shop.entity.Cart;
 import de.telran.shop.entity.CartItems;
+import de.telran.shop.entity.Favorites;
 import de.telran.shop.entity.Users;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.CartItemsRepository;
 import de.telran.shop.repository.CartRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
@@ -71,8 +74,9 @@ class CartServiceTest {
     @Test
     void deleteCartById() {
         long id = 1L;
+        when(cartRepositoryMock.findById(id)).thenReturn(Optional.of(expectedCart));
         cartServiceTest.deleteCartById(id);
-        verify(cartRepositoryMock,times(1)).deleteById(id);
+        verify(cartRepositoryMock,times(1)).delete(expectedCart);
     }
 
     @Test
