@@ -3,14 +3,17 @@ package de.telran.shop.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.telran.shop.dto.CartDto;
 import de.telran.shop.dto.CartItemsDto;
+
 import de.telran.shop.exceptions.CartItemNotFoundException;
 import de.telran.shop.exceptions.CartItemWrongValueException;
+
 import de.telran.shop.service.CartItemsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,12 +31,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CartItemsController.class)
 public class CartItemsControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
     private CartItemsService cartItemsServiceMock;
+
 
     private CartItemsDto cartItemsDto1;
     private CartItemsDto cartItemsDto2;
@@ -46,8 +51,7 @@ public class CartItemsControllerTest {
                 .quantity(12)
                 .cart(CartDto.builder()
                                 .cartId(1l)
-                                .build()
-                        )
+                                .build())
                 .build();
         cartItemsDto2 = CartItemsDto.builder()
                 .cartItemId(2l)
@@ -55,13 +59,13 @@ public class CartItemsControllerTest {
                 .quantity(2)
                 .cart(CartDto.builder()
                         .cartId(2l)
-                        .build()
-                )
+                        .build())
                 .build();
     }
     @Test
     void getCartItems() throws Exception {
         when(cartItemsServiceMock.getCartItems()).thenReturn(List.of(cartItemsDto1,cartItemsDto2));
+
         this.mockMvc.perform(get("/cartitems")).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..cartItemId").exists());
@@ -87,6 +91,7 @@ public class CartItemsControllerTest {
 
     @Test
     void insertCartItems() throws Exception {
+
         cartItemsDto2.setCartItemId(0);
         when(cartItemsServiceMock.insertCartItems(any(CartItemsDto.class))).thenReturn(cartItemsDto1);
         this.mockMvc.perform(post("/cartitems")
@@ -105,8 +110,6 @@ public class CartItemsControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Failed to create cart item due to the wrong parameters"));
-
-
     }
 
     @Test
@@ -146,5 +149,5 @@ public class CartItemsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").exists());
     }
-
 }
+

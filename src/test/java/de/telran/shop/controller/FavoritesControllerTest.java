@@ -1,11 +1,13 @@
 package de.telran.shop.controller;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.telran.shop.dto.FavoritesDto;
 import de.telran.shop.dto.UsersDto;
 import de.telran.shop.exceptions.FavoriteNotFoundException;
 import de.telran.shop.exceptions.FavoriteWrongValueException;
+
 import de.telran.shop.service.FavoritesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(FavoritesController.class)
 class FavoritesControllerTest {
+  
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -55,6 +59,7 @@ class FavoritesControllerTest {
 
     @Test
     void getFavorites() throws Exception {
+
         when(favoritesServiceMock.getFavorites()).thenReturn(List.of(favoritesDto1,favoritesDto2));
         this.mockMvc.perform(get("/favorites"))
                 .andDo(print())
@@ -78,7 +83,6 @@ class FavoritesControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.message").value("the given favorite was not found"));
-
     }
 
     @Test
@@ -116,7 +120,6 @@ class FavoritesControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").exists());
-
     }
 
     @Test

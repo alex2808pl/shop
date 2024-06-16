@@ -2,14 +2,17 @@ package de.telran.shop.service;
 
 import de.telran.shop.dto.FavoritesDto;
 import de.telran.shop.dto.UsersDto;
+
 import de.telran.shop.entity.Cart;
 import de.telran.shop.entity.Favorites;
 import de.telran.shop.entity.Orders;
+
 import de.telran.shop.entity.Users;
 import de.telran.shop.entity.enums.Role;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.FavoritesRepository;
 import de.telran.shop.repository.UsersRepository;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -137,8 +140,7 @@ import static org.mockito.Mockito.when;
       Favorites favorites3 = new Favorites(
               3L,
               4L,
-              users1
-      );
+              users1);
 
       FavoritesDto favoritesDto3 = FavoritesDto.builder()
               .favoriteId(3L)
