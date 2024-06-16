@@ -3,6 +3,8 @@ package de.telran.shop.service;
 import de.telran.shop.config.MapperUtil;
 import de.telran.shop.dto.FavoritesDto;
 import de.telran.shop.entity.Favorites;
+import de.telran.shop.exceptions.FavoriteNotFoundException;
+import de.telran.shop.exceptions.FavoriteWrongValueException;
 import de.telran.shop.mapper.Mappers;
 import de.telran.shop.repository.FavoritesRepository;
 import de.telran.shop.repository.UsersRepository;
@@ -28,10 +30,16 @@ public class FavoritesService {
     }
 
     public FavoritesDto getFavoritesById(Long id) {
+        if(!favoritesRepository.findById(id).isPresent()) {
+            throw new FavoriteNotFoundException("the given favorite was not found");
+        }
         return mappers.convertToFavoritesDto(favoritesRepository.findById(id).orElse(null));
     }
 
     public void deleteFavoritesById(Long id) {
+        if(!favoritesRepository.findById(id).isPresent()) {
+            throw new FavoriteNotFoundException("failed to delete favorite as it was not found");
+        }
         favoritesRepository.findById(id).ifPresent(favoritesRepository::delete);
     }
 
@@ -40,9 +48,7 @@ public class FavoritesService {
                 &&  usersRepository.findById(favoritesDto.getUsers().getUserId()).orElse(null) != null) {
             return mappers.convertToFavoritesDto(favoritesRepository.save(mappers.convertToFavorites(favoritesDto)));
         }
-      else {
-        return null;
-        }
+        throw new FavoriteWrongValueException("failed to create favorite due to the wrong parameters");
     }
 
     public FavoritesDto updateFavorites(FavoritesDto favoritesDto) {
@@ -51,8 +57,6 @@ public class FavoritesService {
                 && usersRepository.findById(favoritesDto.getUsers().getUserId()).orElse(null) != null) {
                         return mappers.convertToFavoritesDto(favoritesRepository.save(mappers.convertToFavorites(favoritesDto)));
         }
-        else {
-            return null;
-        }
+        throw new FavoriteWrongValueException("failed to update favorite`s data");
     }
 }
